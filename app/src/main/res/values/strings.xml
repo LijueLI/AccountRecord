@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AccountRecord</string>
+    <string name="NewItem">新增</string>
+    <string name="Record">紀錄</string>
+    <string name="Date">日期(YYYY/MM/DD)</string>
+    <string name="Item">品項</string>
+    <string name="Price">價格</string>
+</resources>
