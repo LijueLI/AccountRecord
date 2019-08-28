@@ -17,11 +17,10 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private EditText Date,Item,Price;
-    private Button NewR,Record;
+    private Button NewR,Record,Local_Record;
     private String regex = "([^0-9]+)";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference reference = database.getReference();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +33,17 @@ public class MainActivity extends AppCompatActivity {
 
         NewR = findViewById(R.id.New);
         Record = findViewById(R.id.Record);
+        Local_Record = findViewById(R.id.Local_Record);
 
         NewR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Log.d("data",Date.getText().toString()+" "+Item.getText().toString()+" "+Price.getText().toString()+"\n");
 
+                DBHelper dbHelper = new DBHelper(MainActivity.this,1);
                 String DateS = Date.getText().toString();
                 String ItemS = Item.getText().toString();
                 String PriceS = Price.getText().toString();
-
 
                 String[] S = DateS.split(regex);
                 DateS = "";
@@ -52,15 +52,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //Log.d("Dates",String.valueOf(DateS.length()));
                 if(DateS.length()==8&&!ItemS.isEmpty()&&!ItemS.trim().isEmpty()&&!PriceS.isEmpty()&&!PriceS.trim().isEmpty()){
-                    reference.child(DateS).child(Item.getText().toString()).setValue(Price.getText().toString());
+                    reference.child(DateS).child(ItemS).setValue(PriceS);
+                    long i = dbHelper.insert(DateS,ItemS,PriceS);
+                    Log.d("DB",String.valueOf(i));
                     Date.setText("");
                     Item.setText("");
                     Price.setText("");
+
                 }
                 else{
                     Toast toast = Toast.makeText(MainActivity.this,"請依照提示輸入並不要輸入空白",Toast.LENGTH_LONG);
                     toast.show();
                 }
+                dbHelper.close();
             }
         });
 
@@ -70,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this,RecordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Local_Record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,LocalRecord.class);
                 startActivity(intent);
             }
         });

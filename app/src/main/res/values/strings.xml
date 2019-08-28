@@ -5,4 +5,5 @@
     <string name="Date">日期(YYYY/MM/DD)</string>
     <string name="Item">品項</string>
     <string name="Price">價格</string>
+    <string name="Local_Record">本地紀錄</string>
 </resources>
